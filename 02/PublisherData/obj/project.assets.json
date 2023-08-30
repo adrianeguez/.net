@@ -1046,6 +1046,16 @@
             "rid": "win"
           }
         }
+      },
+      "PublisherDomain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/PublisherDomain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PublisherDomain.dll": {}
+        }
       }
     }
   },
@@ -3215,12 +3225,18 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "PublisherDomain/1.0.0": {
+      "type": "project",
+      "path": "../PublisherDomain/PublisherDomain.csproj",
+      "msbuildProject": "../PublisherDomain/PublisherDomain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "Microsoft.EntityFrameworkCore >= 7.0.10",
-      "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.10"
+      "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.10",
+      "PublisherDomain >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -3249,7 +3265,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\EADEP\\OneDrive\\Documentos\\github\\02\\PublisherDomain\\PublisherDomain.csproj": {
+              "projectPath": "C:\\Users\\EADEP\\OneDrive\\Documentos\\github\\02\\PublisherDomain\\PublisherDomain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

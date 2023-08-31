@@ -8,11 +8,14 @@ namespace PublisherData
     {
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Cover> Cover{ get; set; }
+        public DbSet<Artist> Artist { get; set; }
+        public DbSet<AuthorByArtist> AuthorsByArtist { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = PubDatabase3"
+                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = PubDatabase4"
                 ).LogTo(
                 Console.WriteLine,
                 new[] {
@@ -25,16 +28,9 @@ namespace PublisherData
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Author>().HasData(
-                new Author { AuthorId = 1, FirstName = "Adrian", LastName = "Eguez" }
-                );
-            var authorList = new Author[]
-            {
-                new Author { AuthorId = 2, FirstName = "Vicente", LastName = "Eguez" },
-                new Author { AuthorId = 3, FirstName = "Carolina", LastName = "Eguez" },
-                new Author { AuthorId = 4, FirstName = "Adrian", LastName = "Sarzosa" }
-            };
-            modelBuilder.Entity<Author>().HasData(authorList);
+            modelBuilder.Entity<AuthorByArtist>()
+                .HasNoKey() // No tiene PK
+                .ToView(nameof(AuthorsByArtist)); // Mapeado a vista
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublisherData;
 
@@ -11,9 +12,11 @@ using PublisherData;
 namespace PublisherData.Migrations
 {
     [DbContext(typeof(PubContext))]
-    partial class PubContextModelSnapshot : ModelSnapshot
+    [Migration("20230831205208_ArtistAndCover")]
+    partial class ArtistAndCover
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,9 +144,6 @@ namespace PublisherData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CoverId"));
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DesignIdeas")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -152,9 +152,6 @@ namespace PublisherData.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("CoverId");
-
-                    b.HasIndex("BookId")
-                        .IsUnique();
 
                     b.ToTable("Cover");
                 });
@@ -185,26 +182,9 @@ namespace PublisherData.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("PublisherDomain.Cover", b =>
-                {
-                    b.HasOne("PublisherDomain.Book", "Book")
-                        .WithOne("Cover")
-                        .HasForeignKey("PublisherDomain.Cover", "BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("PublisherDomain.Author", b =>
                 {
                     b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("PublisherDomain.Book", b =>
-                {
-                    b.Navigation("Cover")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

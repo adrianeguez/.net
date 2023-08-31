@@ -2,10 +2,10 @@
 
 using Microsoft.EntityFrameworkCore;
 using PublisherData;
+using PublisherDomain;
 
 
-
-//011 - Consultas con relaciones `Include`
+//013 - Vistas
 
 PubContext _context = new PubContext();
 
@@ -13,24 +13,81 @@ queryfilters();
 void queryfilters()
 {
     var filter = "%a%";
-    var query = _context.Authors;
+    var query = _context.AuthorsByArtist;
 
-    var authors = query
-        .Select(a=> new {
-            nombre = a.FirstName + " " + a.LastName,
-            Books = a.Books
-        })
-        // .Where(a => EF.Functions.Like(a.nombre, filter))
-        // .Include(a => a.Books.Where(book => book.Title == "Titulo"))
-        // .Include(a => a.Novelas)
-        // .Include(a => a.Books.OtraRelacion)
-        // .ThenInclude(books=>books.OtraRelacion)
-        .ToList();
-    foreach (var auth in authors)
+    var authorsByArtist = query.ToList();
+    var firstAuthorsByArtist = query.FirstOrDefault();
+    var whereAuthorsByArtist = query.Where(a=>a.Artist.StartsWith("K")).ToList();
+    var rawData = _context.Database.ExecuteSqlRaw("Select * from Author");
+    // .ExecuteSqlRawAsync
+    // .ExecuteSqlInterpolated
+    // .ExecuteSqlInterpolatedAsync
+
+    foreach (var auth in authorsByArtist)
     {
-        Console.WriteLine(auth.nombre);
+        Console.WriteLine(auth.Artist);
     }
 }
+
+////012 - Consultas con relaciones `Include`
+
+//PubContext _context = new PubContext();
+
+//queryfilters();
+//void queryfilters()
+//{
+//    var filter = "%a%";
+//    var query = _context.Authors;
+
+//    var querySql = $"SELECT * FROM AUTHORS WHERE LASTNAME LIKE '{filter}'";
+//    var querySql2 = String
+//        .Format(
+//        "SELECT * FROM AUTHORS WHERE LASTNAME LIKE '{0}'"
+//        , filter
+//        ); // UNSAFE
+//    var authors = query
+//        //.FromSqlRaw("select * from authors") // SAFE sin parametros
+//        //.FromSqlRaw("SELECT * FROM AUTHORS WHERE LASTNAME LIKE '{0}'", filter)  // SAFE
+//        .FromSqlInterpolated($"SELECT * FROM AUTHORS WHERE LASTNAME LIKE '{filter}'")  // SAFE
+//        .TagWith("Formatted_Safe") // tag para la consola
+//        // Composition from RAW SQL Queries
+//        //.FirstOrDefault()
+//        //.OrderBy()
+//        //.Include()
+//        .ToList();
+//    foreach (var auth in authors)
+//    {
+//        Console.WriteLine(auth.FirstName);
+//    }
+//}
+
+
+////011 - Consultas con relaciones `Include`
+
+//PubContext _context = new PubContext();
+
+//queryfilters();
+//void queryfilters()
+//{
+//    var filter = "%a%";
+//    var query = _context.Authors;
+
+//    var authors = query
+//        .Select(a=> new {
+//            nombre = a.FirstName + " " + a.LastName,
+//            Books = a.Books
+//        })
+//        // .Where(a => EF.Functions.Like(a.nombre, filter))
+//        // .Include(a => a.Books.Where(book => book.Title == "Titulo"))
+//        // .Include(a => a.Novelas)
+//        // .Include(a => a.Books.OtraRelacion)
+//        // .ThenInclude(books=>books.OtraRelacion)
+//        .ToList();
+//    foreach (var auth in authors)
+//    {
+//        Console.WriteLine(auth.nombre);
+//    }
+//}
 
 
 //010 -> Logs

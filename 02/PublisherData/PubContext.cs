@@ -8,22 +8,26 @@ namespace PublisherData
     {
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
-        public DbSet<Cover> Cover{ get; set; }
+        public DbSet<Cover> Cover { get; set; }
         public DbSet<Artist> Artist { get; set; }
-        public DbSet<AuthorByArtist> AuthorsByArtist { get; set; }
+        public DbCitiInfo.APISet<AuthorByArtist> AuthorsByArtist { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = PubDatabase4"
-                ).LogTo(
-                Console.WriteLine,
-                new[] {
+            if (!optionsBuilder.IsConfigured)
+            {
+
+                optionsBuilder.UseSqlServer(
+                    "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = PubDatabase4"
+                    ).LogTo(
+                    Console.WriteLine,
+                    new[] {
                     DbLoggerCategory.Database.Command.Name
-                },
-                LogLevel.Information
-                )
-                .EnableSensitiveDataLogging();
+                    },
+                    LogLevel.Information
+                    )
+                    .EnableSensitiveDataLogging();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
